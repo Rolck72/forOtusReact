@@ -1,5 +1,5 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes } from 'react';
 
-export interface SearchProps extends InputHTMLAttributes <HTMLInputElement>{
+export interface SearchProps extends InputHTMLAttributes<HTMLInputElement> {
 	isValid?: boolean;
 }
