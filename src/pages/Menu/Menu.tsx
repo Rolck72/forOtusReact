@@ -7,25 +7,32 @@ import { Product } from "../../interface/product.interface";
 import styles from './Menu.module.css'
 
 
+
 export function Menu() {
   /* 2. работаем с массвом продуков через состояние  */
     
    const [products, setProducts] = useState<Product[]>([])
 
+ 
 
-  /* 1. делаем асинхронную функцию */
+
+  /* 1. делаем асинхронную функцию через fetch */
   const getMenu = async() =>{
-
+    
     try{
+     
       const res = await fetch(`${PREFIX}/products`)
       if(!res.ok) {return}
       const responseData = await res.json();
       const data = responseData.data || [];
       setProducts(data);
+     
     }catch(e){
        console.error(e)
+       
        return
     }
+    
   
   }
     /* 4. вызываем нашу функцию getMenu */
@@ -51,9 +58,8 @@ export function Menu() {
             price={p.price}
             image={p.photo}
            />
-
        ))}
-          
+        
       </div>
     </>
   )
