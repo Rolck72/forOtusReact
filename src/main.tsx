@@ -9,6 +9,9 @@ import { Error } from './pages/Error/Error'
 import { Layout } from './layout/layout/Layout'
 import { Product } from './pages/Product/Product'
 import { PREFIX } from './API/API'
+import { Login } from './pages/Login/Login'
+import { Register } from './pages/Register/Register'
+import { AuthLayout } from './layout/Auth/AuthLayout'
 
 /* делаем ленивую загрузку */
 const Menu = lazy(()=>import('./pages/Menu/Menu'))
@@ -55,6 +58,20 @@ const router = createBrowserRouter([
         }
       }
     ]
+  },
+  {
+    path: '/auth',
+    element: <AuthLayout/>,
+    children: [
+      {
+          path: 'signin',
+          element: <Login/>
+      },
+      {
+        path: 'signup',
+        element: <Register/>
+      }
+  ]
   },
   {
     path: '/*',
