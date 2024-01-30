@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { PREFIX } from "../../API/API";
 import Headling from "../../components/Headling/Headling";
-import ProductCard from "../../components/ProductCart/ProductCart";
 import Search from "../../components/Search/Search";
 import { Product } from "../../interface/product.interface";
 import styles from './Menu.module.css'
+import { MenuList } from "./MenuList/MenuList";
 
 
 
@@ -13,7 +13,8 @@ export function Menu() {
     
    const [products, setProducts] = useState<Product[]>([])
 
- 
+   /* 5. делаем состояние для обработки ошибок */
+   const [error, setError] = useState<string | undefined>()
 
 
   /* 1. делаем асинхронную функцию через fetch */
@@ -22,14 +23,18 @@ export function Menu() {
     try{
      
       const res = await fetch(`${PREFIX}/products`)
-      if(!res.ok) {return}
+      if (!res.ok) {
+        // Обрабатываем ошибку, если статус ответа не в диапазоне 200-299
+        setError(`Ошибка: ${res.status} - ${res.statusText}`);
+        return;
+      }
       const responseData = await res.json();
       const data = responseData.data || [];
       setProducts(data);
      
     }catch(e){
        console.error(e)
-       
+       setError('Произошла ошибка при выполнении запроса');
        return
     }
     
@@ -47,20 +52,12 @@ export function Menu() {
         <Search placeholder="введите товар" />
       </div>
       <div>
+       {error && <div>{error}</div>}
       {/* 3. раскидываем продукты через Map */}
-       {products.map(p =>(
-            <ProductCard
-            key={p.id}
-            id={p.id}
-            name={p.name}
-            description={p.desc}
-            rating={p.oldPrice}
-            price={p.price}
-            image={p.photo}
-           />
-       ))}
-        
+      <MenuList product={products}/>
       </div>
     </>
   )
 }
+
+export default Menu

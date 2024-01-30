@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 
 import './index.css'
-import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { Menu } from './pages/Menu/Menu'
+import { RouterProvider, createBrowserRouter, defer } from 'react-router-dom'
+
 import { Cart } from './pages/Cart/Cart'
 import { Error } from './pages/Error/Error'
 import { Layout } from './layout/layout/Layout'
 import { Product } from './pages/Product/Product'
+import { PREFIX } from './API/API'
+
+/* делаем ленивую загрузку */
+const Menu = lazy(()=>import('./pages/Menu/Menu'))
 
 const router = createBrowserRouter([
   {
@@ -16,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Menu />
+        element:<Suspense fallback={<>загрузка...</>}> <Menu /></Suspense>
       },
       {
         path: '/cart',
@@ -24,7 +28,21 @@ const router = createBrowserRouter([
       },
       {
         path: '/product/:id',
-        element: <Product />
+        element: <Product />,
+        errorElement: <>Ошибка</>, 
+        loader: async ({ params }) => {
+          return defer({
+            data: await fetch(`${PREFIX}/products/${params.id}`).then(data => data)
+          })
+          // try {
+          //   const res = await fetch(`${PREFIX}/products/${params.id}`);
+          //   const data = await res.json();
+          //   return data;
+          // } catch (error) {
+          //   console.error(error);
+      
+          // }
+        }
       }
     ]
   },
