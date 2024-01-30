@@ -7,8 +7,7 @@ import { Menu } from './pages/Menu/Menu'
 import { Cart } from './pages/Cart/Cart'
 import { Error } from './pages/Error/Error'
 import { Layout } from './layout/layout/Layout'
-
-
+import { Product } from './pages/Product/Product'
 
 const router = createBrowserRouter([
   {
@@ -21,7 +20,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/cart',
-        element: <Cart/>
+        element: <Cart />
+      },
+      {
+        path: '/product/:id',
+        element: <Product />
       }
     ]
   },
@@ -31,11 +34,8 @@ const router = createBrowserRouter([
   }
 ])
 
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    
     <RouterProvider router={router} />
-  
-  </React.StrictMode>,
+  </React.StrictMode>
 )
