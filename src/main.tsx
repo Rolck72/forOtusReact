@@ -13,6 +13,7 @@ import { PREFIX } from './API/API'
 /* делаем ленивую загрузку */
 const Menu = lazy(()=>import('./pages/Menu/Menu'))
 
+/* Создаем объект router с использованием createBrowserRouter */
 const router = createBrowserRouter([
   {
     path: '/',
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        /* Используем Suspense для ленивой загрузки Menu с fallback-значением (то, что отображается во время загрузки) */
         element:<Suspense fallback={<>загрузка...</>}> <Menu /></Suspense>
       },
       {
@@ -32,16 +34,24 @@ const router = createBrowserRouter([
         errorElement: <>Ошибка</>, 
         loader: async ({ params }) => {
           return defer({
-            data: await fetch(`${PREFIX}/products/${params.id}`).then(data => data)
-          })
-          // try {
-          //   const res = await fetch(`${PREFIX}/products/${params.id}`);
-          //   const data = await res.json();
-          //   return data;
-          // } catch (error) {
-          //   console.error(error);
-      
-          // }
+            
+            data: new Promise<void>((resolve) => {
+              setTimeout(async () => {
+                try {
+                  // Запрашиваем данные продукта с использованием fetch
+                  const res = await fetch(`${PREFIX}/products/${params.id}`);
+                  if (!res.ok) {  /* fetch - для выполнения HTTP-запросов */
+                  }
+                  // Преобразуем ответ в данные
+                  const data = await res.json();
+                  resolve(data);
+                } catch (error) {
+                  // Ловим ошибки и передаем их в useErrorHandler
+                  resolve(Promise.reject(error));
+                }
+              }, 500);
+            })
+          });
         }
       }
     ]
@@ -52,6 +62,7 @@ const router = createBrowserRouter([
   }
 ])
 
+/* Рендерим приложение внутри строгого режима */
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <RouterProvider router={router} />
