@@ -1,6 +1,6 @@
 // Login.tsx
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import Headling from '../../components/Headling/Headling';
 import Input from '../../components/input/input';
@@ -24,6 +24,8 @@ export type LoginForm = {
 export function Login() {
   // Состояние для отображения сообщения об ошибке
   const [error, setError] = useState<string | null>();
+	// перенаправляем пользователя
+	const navigate = useNavigate()
 
 
  const submit = async (e: FormEvent) => {
@@ -37,11 +39,15 @@ export function Login() {
   const sendLogin = async (email: string, password: string) => {
 		try{
 			const { data } = await axios.post<LoginResponse>(`${PREFIX}/signin`, 
-      { email,
+      { 
+				email,
 				password
-
 			})
 			  console.log(data)
+				localStorage.setItem('jwt', data.access_token )
+				
+				// после авторизации направляем пользователя на главную 
+				navigate('/')
 			}catch(e){
 		    if (e instanceof AxiosError){
 					setError(e.response?.data.message)

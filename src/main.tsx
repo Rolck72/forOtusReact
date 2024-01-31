@@ -11,7 +11,6 @@ import { Product } from './pages/Product/Product'
 import { PREFIX } from './API/API'
 import { Login } from './pages/Login/Login'
 import { Register } from './pages/Register/Register'
-import { AuthLayout } from './layout/Auth/AuthLayout'
 import { RequireAuth } from './API/RequireAuth'
 
 /* делаем ленивую загрузку */
@@ -60,10 +59,8 @@ const router = createBrowserRouter([
       }
     ]
   },
-  {
-    path: '/auth',
-    element: <AuthLayout/>,
-    children: [
+  
+ 
       {
           path: 'signin',
           element: <Login/>
@@ -71,9 +68,9 @@ const router = createBrowserRouter([
       {
         path: 'signup',
         element: <Register/>
-      }
-  ]
-  },
+      },
+  
+  
   {
     path: '/*',
     element: <Error />
