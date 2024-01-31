@@ -3,7 +3,7 @@
 export function Error() {
   return (
     <>
-      jjj
+      Error
     </>
   )
 }

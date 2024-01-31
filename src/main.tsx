@@ -12,6 +12,7 @@ import { PREFIX } from './API/API'
 import { Login } from './pages/Login/Login'
 import { Register } from './pages/Register/Register'
 import { AuthLayout } from './layout/Auth/AuthLayout'
+import { RequireAuth } from './API/RequireAuth'
 
 /* делаем ленивую загрузку */
 const Menu = lazy(()=>import('./pages/Menu/Menu'))
@@ -20,7 +21,7 @@ const Menu = lazy(()=>import('./pages/Menu/Menu'))
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
+    element: <RequireAuth><Layout /></RequireAuth>,
     children: [
       {
         path: '/',
