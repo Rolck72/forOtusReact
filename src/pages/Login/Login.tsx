@@ -9,6 +9,9 @@ import { FormEvent, useState } from 'react';
 import { PREFIX } from '../../API/API';
 import { LoginResponse } from '../../interface/auth.interface';
 import axios, { AxiosError } from 'axios';
+import { useDispatch } from 'react-redux';
+import { AppDispath } from '../../store_redux/store';
+import { userActions } from '../../store_redux/user.slice';
 
 
 // Интерфейс для формы входа
@@ -26,6 +29,7 @@ export function Login() {
   const [error, setError] = useState<string | null>();
 	// перенаправляем пользователя
 	const navigate = useNavigate()
+	const dispatch = useDispatch<AppDispath>()
 
 
  const submit = async (e: FormEvent) => {
@@ -45,7 +49,8 @@ export function Login() {
 			})
 			  console.log(data)
 				localStorage.setItem('jwt', data.access_token )
-				
+				dispatch(userActions.addJwt(data.access_token))
+
 				// после авторизации направляем пользователя на главную 
 				navigate('/')
 			}catch(e){

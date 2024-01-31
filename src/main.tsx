@@ -12,6 +12,8 @@ import { PREFIX } from './API/API'
 import { Login } from './pages/Login/Login'
 import { Register } from './pages/Register/Register'
 import { RequireAuth } from './API/RequireAuth'
+import { Provider } from 'react-redux'
+import { store } from './store_redux/store'
 
 /* делаем ленивую загрузку */
 const Menu = lazy(()=>import('./pages/Menu/Menu'))
@@ -80,6 +82,8 @@ const router = createBrowserRouter([
 /* Рендерим приложение внутри строгого режима */
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
+    <Provider store={store}>
     <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 )
