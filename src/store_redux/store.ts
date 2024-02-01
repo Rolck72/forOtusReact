@@ -8,9 +8,15 @@ export const store = configureStore({
 	}
 })
 
+
 store.subscribe(() => {
-	  saveState({jwt: store.getState().user.jwt}, JWT_PRESISTENT_STATE)
-})
+  saveState({ jwt: store.getState().user.jwt }, JWT_PRESISTENT_STATE);
+});
+
+// store.subscribe(() => {
+// 	  saveState({jwt: store.getState().user.jwt}, JWT_PRESISTENT_STATE)
+		
+// })
 
 export type RootState = ReturnType <typeof store.getState>
 export type AppDispath = typeof store.dispatch

@@ -49,6 +49,8 @@ export function Login() {
 			})
 			  console.log(data)
 				localStorage.setItem('jwt', data.access_token )
+				
+				// 1. хранение данных (проблема с доступом)
 				dispatch(userActions.addJwt(data.access_token))
 
 				// после авторизации направляем пользователя на главную 
